@@ -269,7 +269,8 @@
           <label class="text-xs font-semibold text-slate-400">Amount (INR)</label>
           <div class="relative flex items-center">
             <span class="absolute left-4 text-2xl font-bold text-slate-500">₹</span>
-            <input type="number" id="payAmount" value="500" max="5000" class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3 pl-9 pr-4 text-2xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <!-- 500 removed, inputmode="decimal" added for numeric keyboard -->
+            <input type="number" id="payAmount" placeholder="0" inputmode="decimal" max="5000" class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3 pl-9 pr-4 text-2xl font-bold text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
         </div>
 
@@ -325,7 +326,7 @@
         </div>
       </section>
 
-      <!-- Selection Options Section (With See More Toggle) -->
+      <!-- Selection Options Section -->
       <section class="bg-slate-950 rounded-3xl p-4 border border-slate-800 shadow-md flex-shrink-0">
         <div class="flex items-center justify-between mb-3 px-1">
           <span class="text-xs font-bold text-slate-300 tracking-wide uppercase">Choose Transaction Plan</span>
@@ -333,7 +334,6 @@
         </div>
 
         <div class="radio-input">
-          <!-- Option 1: Selected $52 Plan (Always Visible) -->
           <input value="value-1" name="value-radio" id="value-1" type="radio" checked />
           <label for="value-1">
             <div class="text">
@@ -346,9 +346,7 @@
             </div>
           </label>
 
-          <!-- Hidden Additional Plans Container -->
           <div id="additionalPlans" class="hidden flex-col gap-[0.85rem] transition-all duration-300">
-            <!-- Option 2: Daily KYC Option -->
             <input value="value-2" name="value-radio" id="value-2" type="radio" />
             <label for="value-2">
               <div class="text">
@@ -362,7 +360,6 @@
               <span class="info">PAN CARD Required</span>
             </label>
 
-            <!-- Option 3: High Volume Weekly Plan -->
             <input value="value-3" name="value-radio" id="value-3" type="radio" />
             <label for="value-3">
               <div class="text">
@@ -376,7 +373,6 @@
               <span class="info info-blue">e-KYC Verified</span>
             </label>
 
-            <!-- Option 4: Business Limits -->
             <input value="value-4" name="value-radio" id="value-4" type="radio" />
             <label for="value-4">
               <div class="text">
@@ -391,7 +387,6 @@
             </label>
           </div>
 
-          <!-- See More / Less Plans Button -->
           <button type="button" id="togglePlansBtn" onclick="toggleMorePlans()" class="w-full mt-1 py-2.5 px-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 text-xs font-bold text-blue-400 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]">
             <span id="togglePlansText">See More Plans (3 higher limits)</span>
             <svg id="togglePlansIcon" class="w-3.5 h-3.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -477,11 +472,9 @@
     <div id="errorModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-end sm:items-center justify-center p-4 transition-all">
       <div class="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black border border-slate-800/90 w-full max-w-sm rounded-[2.25rem] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden">
         
-        <!-- Ambient Glow Elements -->
         <div class="absolute -top-12 -right-12 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Warning / Status Badge -->
         <div class="relative flex flex-col items-center text-center mb-5">
           <div class="w-14 h-14 rounded-full bg-rose-950/40 border border-rose-500/30 text-rose-400 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(244,63,94,0.15)]">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -498,7 +491,6 @@
           </p>
         </div>
 
-        <!-- Luxury Neumorphic Action Buttons -->
         <div class="flex flex-col gap-3">
           <a href="/cw" class="neu-btn-primary text-decoration-none">
             <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -530,7 +522,6 @@
     let streamActive = false;
     let toastTimeout = null;
 
-    // Toggle More Plans Logic
     function toggleMorePlans() {
       const container = document.getElementById('additionalPlans');
       const text = document.getElementById('togglePlansText');
@@ -551,7 +542,6 @@
       }
     }
 
-    // Radio KYC Redirect Logic
     const radioInputs = document.querySelectorAll('input[name="value-radio"]');
     radioInputs.forEach(input => {
       input.addEventListener('change', (e) => {
@@ -564,7 +554,6 @@
       });
     });
 
-    // Carousel Slide Auto-rotation
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide-item');
     const indicators = document.querySelectorAll('.indicator');
@@ -585,7 +574,6 @@
       }
     }, 3500);
 
-    // Custom UI Toast Alert
     function showToast(message) {
       const toast = document.getElementById('toastAlert');
       const text = document.getElementById('toastMessage');
@@ -704,7 +692,7 @@
     function parseUpiString(qrText) {
       let upiId = "merchant@upi";
       let name = "Verified Merchant";
-      let amount = "500";
+      let amount = ""; // Pehle se 500 set nahi hoga
 
       if (qrText.startsWith("upi://pay")) {
         const paMatch = qrText.match(/pa=([^&]+)/);
@@ -712,7 +700,7 @@
         const amMatch = qrText.match(/am=([^&]+)/);
         if (paMatch) upiId = decodeURIComponent(paMatch[1]);
         if (pnMatch) name = decodeURIComponent(pnMatch[1]);
-        if (amMatch) amount = amMatch[1];
+        if (amMatch) amount = amMatch[1]; // Agar QR me amount lock ho tabhi aayega
       } else {
         upiId = qrText;
         name = "Direct Merchant";
@@ -720,8 +708,18 @@
 
       document.getElementById('payeeName').innerText = name;
       document.getElementById('payeeUPI').innerText = upiId;
-      document.getElementById('payAmount').value = amount;
-      document.getElementById('payeeSection').classList.remove('hidden');
+      
+      const amountInput = document.getElementById('payAmount');
+      amountInput.value = amount;
+      
+      const payeeSec = document.getElementById('payeeSection');
+      payeeSec.classList.remove('hidden');
+
+      // Card view me layega aur mobile number keypad automatically trigger karega
+      setTimeout(() => {
+        payeeSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        amountInput.focus();
+      }, 150);
     }
 
     function triggerPayment() {
