@@ -53,8 +53,8 @@
       </div>
     </header>
 
-    <!-- Scrollable Body (Independent scroll container) -->
-    <main class="flex-1 overflow-y-auto no-scrollbar px-4 py-4 flex flex-col gap-4 pb-32">
+    <!-- Scrollable Body (Added pb-28 so bottom content is never hidden behind floating bar) -->
+    <main class="flex-1 overflow-y-auto no-scrollbar px-4 py-4 flex flex-col gap-4 pb-28">
       
       <!-- Wallet Balance Card -->
       <section class="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-lg shadow-indigo-950/20 flex-shrink-0">
@@ -137,9 +137,9 @@
 
     </main>
 
-    <!-- FIXED FLOATING SCAN BAR (Always visible above scroll) -->
-    <div class="absolute bottom-5 left-0 right-0 z-30 pointer-events-none flex justify-center px-4">
-      <div class="pointer-events-auto bg-white/80 hover:bg-white/95 backdrop-blur-xl border border-white/60 shadow-[0_12px_30px_-6px_rgba(0,0,0,0.18)] rounded-full px-5 py-2.5 flex items-center gap-3 active:scale-95 transition-all cursor-pointer group" onclick="startScanner()">
+    <!-- FIXED FLOATING SCAN BAR (Mobile par screen bottom, desktop card par card bottom par chipka rahega) -->
+    <div class="fixed sm:absolute bottom-6 left-0 right-0 z-40 pointer-events-none flex justify-center px-4">
+      <div class="pointer-events-auto bg-white/95 backdrop-blur-xl border border-slate-200/80 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.25)] rounded-full px-6 py-2.5 flex items-center gap-3 active:scale-95 transition-all cursor-pointer group" onclick="startScanner()">
         
         <!-- Animated Custom QR Scanner Icon -->
         <div class="w-12 h-12 rounded-full bg-white shadow-md border border-slate-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
@@ -191,7 +191,7 @@
           </svg>
         </div>
 
-        <div class="pr-3 flex flex-col">
+        <div class="pr-2 flex flex-col">
           <span class="text-xs font-black tracking-wider text-slate-900 uppercase">SCAN QR</span>
           <span class="text-[10px] font-semibold text-blue-600 -mt-0.5">Any UPI Code</span>
         </div>
