@@ -269,7 +269,7 @@
       // 1. Agar browser me pehle se camera blocked hai
       const permStatus = await checkCameraPermission();
       if (permStatus === 'denied') {
-        showToast("Camera access blocked hai. Kripya browser settings se camera unblock karein.");
+        showToast("Camera access blocked . turn it on using App or chrome settings");
         modal.classList.add('hidden');
         return;
       }
@@ -322,9 +322,9 @@
         const errMsg = err?.name || err?.toString() || '';
         
         if (errMsg.includes('NotAllowedError') || errMsg.includes('PermissionDeniedError')) {
-          showToast("Camera permission decline kar di gayi hai.");
+          showToast("Camera permission Error");
         } else {
-          showToast("Camera connect nahi ho saka. Dobara koshish karein.");
+          showToast("Retry to connect ");
         }
       }
     }
