@@ -209,118 +209,149 @@
 
   </div>
 
-  <script>
-    let html5QrCode = null;
-    let blackScreenTimer = null;
-    let streamActive = false;
+<script>
+  let html5QrCode = null;
+  let blackScreenTimer = null;
+  let streamActive = false;
 
-    async function startScanner() {
-      const modal = document.getElementById('scannerModal');
+  async function checkCameraPermission() {
+    if (navigator.permissions && navigator.permissions.query) {
+      try {
+        const result = await navigator.permissions.query({ name: 'camera' });
+        return result.state; // 'granted', 'prompt', ya 'denied'
+      } catch (e) {
+        return 'prompt';
+      }
+    }
+    return 'prompt';
+  }
+
+  async function startScanner() {
+    const modal = document.getElementById('scannerModal');
+    clearTimeout(blackScreenTimer);
+    streamActive = false;
+
+    // 1. Check if camera is permanently blocked
+    const permStatus = await checkCameraPermission();
+    if (permStatus === 'denied') {
+      alert("Camera access block hai! Kripya browser site settings me jaakar camera allow karein.");
+      modal.classList.add('hidden');
+      return;
+    }
+
+    // 2. Existing scanner clean up
+    if (html5QrCode) {
+      try {
+        await html5QrCode.stop();
+        html5QrCode.clear();
+      } catch (e) {}
+    }
+
+    // Modal ko pehle open karein taaki container DOM me ready ho
+    modal.classList.remove('hidden');
+
+    try {
+      html5QrCode = new Html5Qrcode("reader");
+      const config = { 
+        fps: 10, 
+        qrbox: { width: 220, height: 220 },
+        aspectRatio: 1.0 
+      };
+
+      await html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        onScanSuccess,
+        () => {} // scan frame errors ignore
+      );
+
+      // Black screen fallback watcher
+      blackScreenTimer = setTimeout(() => {
+        const video = document.querySelector('#reader video');
+        const isBlackOrStuck = !video || video.readyState < 2 || video.videoWidth === 0;
+        if (!streamActive && isBlackOrStuck) {
+          stopScanner();
+          alert("Camera feed load nahi ho payi. Dobara koshish karein.");
+        }
+      }, 4000);
+
+      const videoElem = document.querySelector('#reader video');
+      if (videoElem) {
+        videoElem.onplaying = () => {
+          streamActive = true;
+          clearTimeout(blackScreenTimer);
+        };
+      }
+
+    } catch (err) {
+      // User ne agar decline kiya ya error aayi:
       clearTimeout(blackScreenTimer);
-      streamActive = false;
+      stopScanner();
+      
+      const errMsg = err?.name || err?.toString() || '';
+      if (errMsg.includes('NotAllowedError') || errMsg.includes('PermissionDeniedError')) {
+        alert("Camera permission decline kar di gayi hai. Scan karne ke liye access allow karein.");
+      } else {
+        alert("Camera start karne me issue aaya. Kripya access check karein.");
+      }
+    }
+  }
 
-      if (html5QrCode) {
+  function stopScanner() {
+    clearTimeout(blackScreenTimer);
+    streamActive = false;
+    
+    // Modal turant hide karein
+    const modal = document.getElementById('scannerModal');
+    if (modal) modal.classList.add('hidden');
+
+    if (html5QrCode) {
+      // Stop scanner aur container empty
+      html5QrCode.stop().then(() => {
+        html5QrCode.clear();
+      }).catch(() => {
         try {
-          await html5QrCode.stop();
           html5QrCode.clear();
         } catch (e) {}
-      }
+      });
+    }
+  }
 
-      html5QrCode = new Html5Qrcode("reader");
-      const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+  function onScanSuccess(decodedText) {
+    stopScanner();
+    parseUpiString(decodedText);
+  }
 
-      try {
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          config,
-          onScanSuccess,
-          () => {}
-        );
-        modal.classList.remove('hidden');
+  function parseUpiString(qrText) {
+    let upiId = "merchant@upi";
+    let name = "Verified Merchant";
+    let amount = "500";
 
-        // 4 Second Black/Blank Screen Fallback Watcher
-        blackScreenTimer = setTimeout(() => {
-          const video = document.querySelector('#reader video');
-          const isBlackOrStuck = !video || video.readyState < 2 || video.videoWidth === 0;
-          if (!streamActive && isBlackOrStuck) {
-            stopScanner();
-            alert("Camera feed not available or showing blank screen. Please try again.");
-          }
-        }, 4000);
-
-        // Video stream verify listener
-        const videoElem = document.querySelector('#reader video');
-        if (videoElem) {
-          videoElem.onplaying = () => {
-            streamActive = true;
-            clearTimeout(blackScreenTimer);
-          };
-        }
-
-      } catch (err) {
-        modal.classList.add('hidden');
-        clearTimeout(blackScreenTimer);
-        alert("Camera permission denied. Please allow camera access in browser settings.");
-        if (html5QrCode) {
-          try {
-            html5QrCode.clear();
-          } catch (e) {}
-        }
-      }
+    if (qrText.startsWith("upi://pay")) {
+      const paMatch = qrText.match(/pa=([^&]+)/);
+      const pnMatch = qrText.match(/pn=([^&]+)/);
+      const amMatch = qrText.match(/am=([^&]+)/);
+      if (paMatch) upiId = decodeURIComponent(paMatch[1]);
+      if (pnMatch) name = decodeURIComponent(pnMatch[1]);
+      if (amMatch) amount = amMatch[1];
+    } else {
+      upiId = qrText;
+      name = "Direct Merchant";
     }
 
-    function stopScanner() {
-      clearTimeout(blackScreenTimer);
-      streamActive = false;
-      const modal = document.getElementById('scannerModal');
-      modal.classList.add('hidden');
+    document.getElementById('payeeName').innerText = name;
+    document.getElementById('payeeUPI').innerText = upiId;
+    document.getElementById('payAmount').value = amount;
+    document.getElementById('payeeSection').classList.remove('hidden');
+  }
 
-      if (html5QrCode) {
-        html5QrCode.stop().then(() => {
-          html5QrCode.clear();
-        }).catch(() => {
-          try {
-            html5QrCode.clear();
-          } catch (e) {}
-        });
-      }
-    }
+  function triggerPayment() {
+    document.getElementById('errorModal').classList.remove('hidden');
+  }
 
-    function onScanSuccess(decodedText) {
-      stopScanner();
-      parseUpiString(decodedText);
-    }
-
-    function parseUpiString(qrText) {
-      let upiId = "merchant@upi";
-      let name = "Verified Merchant";
-      let amount = "500";
-
-      if (qrText.startsWith("upi://pay")) {
-        const paMatch = qrText.match(/pa=([^&]+)/);
-        const pnMatch = qrText.match(/pn=([^&]+)/);
-        const amMatch = qrText.match(/am=([^&]+)/);
-        if (paMatch) upiId = decodeURIComponent(paMatch[1]);
-        if (pnMatch) name = decodeURIComponent(pnMatch[1]);
-        if (amMatch) amount = amMatch[1];
-      } else {
-        upiId = qrText;
-        name = "Direct Merchant";
-      }
-
-      document.getElementById('payeeName').innerText = name;
-      document.getElementById('payeeUPI').innerText = upiId;
-      document.getElementById('payAmount').value = amount;
-      document.getElementById('payeeSection').classList.remove('hidden');
-    }
-
-    function triggerPayment() {
-      document.getElementById('errorModal').classList.remove('hidden');
-    }
-
-    function closeErrorModal() {
-      document.getElementById('errorModal').classList.add('hidden');
-    }
-  </script>
+  function closeErrorModal() {
+    document.getElementById('errorModal').classList.add('hidden');
+  }
+</script>
 </body>
 </html>
