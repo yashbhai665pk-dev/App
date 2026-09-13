@@ -8,12 +8,105 @@
   <script src="https://unpkg.com/html5-qrcode"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body{font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent}
-    .scanner-view video{object-fit:cover!important;border-radius:1.5rem}
-    .no-scrollbar::-webkit-scrollbar{display:none}
-    .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
-    @keyframes scanLaser{0%,100%{transform:translateY(-7px);opacity:0.7}50%{transform:translateY(7px);opacity:1}}
-    .laser-line{animation:scanLaser 2s ease-in-out infinite}
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .scanner-view video { object-fit: cover !important; border-radius: 1.5rem; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes scanLaser { 0%, 100% { transform: translateY(-7px); opacity: 0.7; } 50% { transform: translateY(7px); opacity: 1; } }
+    .laser-line { animation: scanLaser 2s ease-in-out infinite; }
+
+    /* Custom Radio Input Component Styles */
+    .radio-input {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      width: 100%;
+    }
+    .radio-input input {
+      display: none;
+    }
+    .radio-input label {
+      --border-color: #cbd5e1;
+      border: 1.5px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 0.85rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      align-items: center;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .radio-input input:checked + label {
+      --border-color: #2563eb;
+      border-color: var(--border-color);
+      border-width: 2px;
+      background-color: #eff6ff;
+    }
+    .radio-input label:hover {
+      --border-color: #3b82f6;
+    }
+    .circle {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: #cbd5e1;
+      margin-right: 0.65rem;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .radio-input input:checked + label span.circle::before {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #2563eb;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .text {
+      display: flex;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .price {
+      display: flex;
+      flex-direction: column;
+      text-align: right;
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 0.9rem;
+    }
+    .small {
+      font-size: 9.5px;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .info {
+      position: absolute;
+      display: inline-block;
+      font-size: 9.5px;
+      font-weight: 700;
+      background-color: #10b981;
+      color: #ffffff;
+      border-radius: 9999px;
+      padding: 2px 8px;
+      top: 0;
+      transform: translateY(-50%);
+      right: 12px;
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
+    }
+    .info-blue {
+      background-color: #3b82f6;
+      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+    }
   </style>
 </head>
 <body class="bg-slate-900 sm:bg-slate-200 flex items-center justify-center min-h-screen p-0 sm:p-4 text-slate-900">
@@ -48,24 +141,32 @@
     <!-- Scrollable Body -->
     <main class="flex-1 overflow-y-auto no-scrollbar px-4 py-4 flex flex-col gap-4 pb-28">
       
-      <!-- Wallet Balance Card -->
+      <!-- Wallet Balance Card with UPI Partners on the right -->
       <section class="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-lg shadow-indigo-950/20 flex-shrink-0">
         <div class="absolute -right-8 -top-8 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
-        <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+        <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
           <span class="font-medium tracking-wide">Main Wallet</span>
           <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-medium border border-emerald-500/20">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Active
           </span>
         </div>
 
-        <div class="mb-4">
-          <div class="text-3xl font-extrabold tracking-tight flex items-baseline gap-1">
-            0.00 <span class="text-xs text-slate-400 font-medium">USDT</span>
+        <div class="flex items-center justify-between gap-2 mb-4">
+          <div>
+            <div class="text-3xl font-extrabold tracking-tight flex items-baseline gap-1">
+              0.00 <span class="text-xs text-slate-400 font-medium">USDT</span>
+            </div>
+            <div class="text-xs font-semibold text-slate-400 flex items-center gap-1 mt-0.5">
+              <span>≈ ₹0.00</span>
+              <span class="text-[10px] text-slate-500 font-normal">INR</span>
+            </div>
           </div>
-          <div class="text-xs font-semibold text-slate-400 flex items-center gap-1 mt-0.5">
-            <span>≈ ₹0.00</span>
-            <span class="text-[10px] text-slate-500 font-normal">INR</span>
+
+          <!-- All UPI Supported Right Side Tag -->
+          <div class="bg-white/10 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-2xl flex flex-col items-center justify-center flex-shrink-0">
+            <span class="text-[9px] uppercase tracking-wider text-slate-300 font-bold mb-1">Supported UPI</span>
+            <img src="https://cdn.shopify.com/extensions/01a08b67-ffd1-797b-b12a-76dfdff95436/shiprocket-smart-cart-253/assets/buy_button_icons.png" alt="All UPI Supported" class="h-5 w-auto object-contain brightness-110" />
           </div>
         </div>
 
@@ -111,21 +212,121 @@
         </button>
       </section>
 
-      <!-- Center Feature Poster Banner -->
-      <div class="rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm bg-white flex-shrink-0">
-        <img src="https://i.pinimg.com/736x/c6/b4/b2/c6b4b255406b56a37d7fbd519f17a42c.jpg" alt="ScanSetu Feature" class="w-full h-auto object-cover max-h-56" />
-      </div>
+      <!-- Dynamic Feature Slideshow (Global UPI, Scan to Pay, Best for Offline Shopping) -->
+      <section class="relative rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm bg-white flex-shrink-0">
+        <div id="slidesContainer" class="relative w-full h-52 overflow-hidden">
+          
+          <!-- Slide 1: Global UPI -->
+          <div class="slide-item absolute inset-0 transition-opacity duration-700 opacity-100 flex flex-col justify-between p-4 bg-slate-900 text-white">
+            <img src="https://i.pinimg.com/1200x/92/f8/83/92f8838fab8aa6f8d12a9035f2b7460c.jpg" alt="Slide 1" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" />
+            <div class="relative z-10 flex items-center justify-between">
+              <span class="px-2.5 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold tracking-wide uppercase">Global UPI</span>
+              <img src="https://static.vecteezy.com/system/resources/thumbnails/023/353/492/small_2x/united-states-countries-flags-png.png" alt="Country Flag" class="h-5 w-auto object-contain" />
+            </div>
+            <div class="relative z-10 mt-auto">
+              <h3 class="text-lg font-extrabold tracking-tight">Worldwide UPI Payments</h3>
+              <p class="text-xs text-slate-300">Spend directly from your crypto wallet across borders.</p>
+            </div>
+          </div>
 
-      <!-- Works with all UPIs Section -->
-      <div class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex-shrink-0">
-        <div class="flex items-center justify-between mb-2.5">
-          <span class="text-xs font-bold text-slate-700 tracking-wide uppercase">Works with all UPIs</span>
-          <span class="text-[11px] font-semibold text-blue-600">Instant Settle</span>
+          <!-- Slide 2: Scan to Pay -->
+          <div class="slide-item absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col justify-between p-4 bg-slate-900 text-white">
+            <img src="https://i.pinimg.com/736x/03/ba/57/03ba573e58b60d51021648d8203b7df8.jpg" alt="Scan to Pay" class="absolute inset-0 w-full h-full object-cover opacity-50" />
+            <div class="relative z-10">
+              <span class="px-2.5 py-1 bg-blue-500/80 backdrop-blur-md rounded-full text-[10px] font-bold tracking-wide uppercase">Scan to Pay</span>
+            </div>
+            <div class="relative z-10 mt-auto bg-slate-950/60 backdrop-blur-md p-3 rounded-2xl border border-white/10">
+              <h3 class="text-base font-extrabold text-white">Zero Extra Fees</h3>
+              <p class="text-[11px] text-slate-300">Scan standard BharatPe, PhonePe, Paytm, and Google Pay QRs.</p>
+            </div>
+          </div>
+
+          <!-- Slide 3: Best for Offline Shoppings -->
+          <div class="slide-item absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col justify-between p-4 bg-slate-900 text-white">
+            <img src="https://i.pinimg.com/736x/e5/63/6e/e5636ef5e7d492704d5e25b5e2d6dcf3.jpg" alt="Offline Shopping" class="absolute inset-0 w-full h-full object-cover opacity-45" />
+            <div class="relative z-10">
+              <span class="px-2.5 py-1 bg-emerald-500/80 backdrop-blur-md rounded-full text-[10px] font-bold tracking-wide uppercase">Best for Offline Shoppings</span>
+            </div>
+            <div class="relative z-10 mt-auto bg-slate-950/60 backdrop-blur-md p-3 rounded-2xl border border-white/10">
+              <h3 class="text-base font-extrabold text-white">Street-to-Store Ready</h3>
+              <p class="text-[11px] text-slate-300">Accepted seamlessly at local retail outlets and supermarkets.</p>
+            </div>
+          </div>
+
         </div>
-        <div class="rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 p-1">
-          <img src="https://i.pinimg.com/1200x/da/6c/af/da6caf19499fcdf811f5dce0c1fe255e.jpg" alt="Supported UPI Apps" class="w-full h-auto object-cover rounded-xl" />
+
+        <!-- Slide Indicators -->
+        <div class="absolute bottom-2 right-3 z-20 flex gap-1.5">
+          <div class="w-1.5 h-1.5 rounded-full bg-white/40 indicator active"></div>
+          <div class="w-1.5 h-1.5 rounded-full bg-white/40 indicator"></div>
+          <div class="w-1.5 h-1.5 rounded-full bg-white/40 indicator"></div>
         </div>
-      </div>
+      </section>
+
+      <!-- Selection Options Section (Replaced 'Works with all UPIs') -->
+      <section class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm flex-shrink-0">
+        <div class="flex items-center justify-between mb-3 px-1">
+          <span class="text-xs font-bold text-slate-800 tracking-wide uppercase">Choose Transaction Plan</span>
+          <span class="text-[11px] font-semibold text-blue-600">Select Limits</span>
+        </div>
+
+        <div class="radio-input">
+          <!-- Option 1: Basic Daily No-KYC -->
+          <input value="value-1" name="value-radio" id="value-1" type="radio" checked />
+          <label for="value-1">
+            <div class="text">
+              <span class="circle"></span>
+              Daily
+            </div>
+            <div class="price">
+              <span>$52/-</span>
+              <span class="small">INR value depend on real market</span>
+            </div>
+          </label>
+
+          <!-- Option 2: Daily KYC Option (Triggers redirect to /kyc) -->
+          <input value="value-2" name="value-radio" id="value-2" type="radio" />
+          <label for="value-2">
+            <div class="text">
+              <span class="circle"></span>
+              Daily Plus
+            </div>
+            <div class="price">
+              <span>$200/-</span>
+              <span class="small">1$ = 110 INR with e-KYC</span>
+            </div>
+            <span class="info">PAN CARD Required.</span>
+          </label>
+
+          <!-- Option 3: High Volume Weekly Plan (KYC Required) -->
+          <input value="value-3" name="value-radio" id="value-3" type="radio" />
+          <label for="value-3">
+            <div class="text">
+              <span class="circle"></span>
+              Weekly Pro
+            </div>
+            <div class="price">
+              <span>$500/-</span>
+              <span class="small">High tier instant settlement</span>
+            </div>
+            <span class="info info-blue">e-KYC Verified</span>
+          </label>
+
+          <!-- Option 4: Business / Merchant Limits -->
+          <input value="value-4" name="value-radio" id="value-4" type="radio" />
+          <label for="value-4">
+            <div class="text">
+              <span class="circle"></span>
+              Business
+            </div>
+            <div class="price">
+              <span>$2,000/-</span>
+              <span class="small">Zero slippage OTC rates</span>
+            </div>
+            <span class="info info-blue">GST / PAN</span>
+          </label>
+        </div>
+      </section>
 
     </main>
 
@@ -232,7 +433,42 @@
     let streamActive = false;
     let toastTimeout = null;
 
-    // Custom UI Toast Alert (Replaces browser window alert)
+    // Radio KYC Redirect Logic
+    const radioInputs = document.querySelectorAll('input[name="value-radio"]');
+    radioInputs.forEach(input => {
+      input.addEventListener('change', (e) => {
+        // value-2 (Daily $200), value-3 ($500), value-4 ($2,000) requires KYC
+        if (e.target.value === 'value-2' || e.target.value === 'value-3' || e.target.value === 'value-4') {
+          showToast("KYC Verification required for this limit. Redirecting...");
+          setTimeout(() => {
+            window.location.href = '/kyc';
+          }, 800);
+        }
+      });
+    });
+
+    // Carousel Slide Auto-rotation
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide-item');
+    const indicators = document.querySelectorAll('.indicator');
+
+    setInterval(() => {
+      if (slides.length > 0) {
+        slides[currentSlide].classList.remove('opacity-100');
+        slides[currentSlide].classList.add('opacity-0');
+        indicators[currentSlide].classList.remove('bg-white');
+        indicators[currentSlide].classList.add('bg-white/40');
+
+        currentSlide = (currentSlide + 1) % slides.length;
+
+        slides[currentSlide].classList.remove('opacity-0');
+        slides[currentSlide].classList.add('opacity-100');
+        indicators[currentSlide].classList.remove('bg-white/40');
+        indicators[currentSlide].classList.add('bg-white');
+      }
+    }, 3500);
+
+    // Custom UI Toast Alert
     function showToast(message) {
       const toast = document.getElementById('toastAlert');
       const text = document.getElementById('toastMessage');
@@ -253,7 +489,7 @@
       if (navigator.permissions && navigator.permissions.query) {
         try {
           const result = await navigator.permissions.query({ name: 'camera' });
-          return result.state; // 'granted', 'prompt', 'denied'
+          return result.state;
         } catch (e) {
           return 'prompt';
         }
@@ -266,15 +502,13 @@
       clearTimeout(blackScreenTimer);
       streamActive = false;
 
-      // 1. Agar browser me pehle se camera blocked hai
       const permStatus = await checkCameraPermission();
       if (permStatus === 'denied') {
-        showToast("Camera access blocked . turn it on using App or chrome settings");
+        showToast("Camera access blocked. Turn it on using App or Chrome settings");
         modal.classList.add('hidden');
         return;
       }
 
-      // 2. Existing scanner clean up
       if (html5QrCode) {
         try {
           await html5QrCode.stop();
@@ -299,7 +533,6 @@
           () => {}
         );
 
-        // Black screen fallback
         blackScreenTimer = setTimeout(() => {
           const video = document.querySelector('#reader video');
           const isBlackOrStuck = !video || video.readyState < 2 || video.videoWidth === 0;
@@ -324,7 +557,7 @@
         if (errMsg.includes('NotAllowedError') || errMsg.includes('PermissionDeniedError')) {
           showToast("Camera permission Error");
         } else {
-          showToast("Retry to connect ");
+          showToast("Retry to connect");
         }
       }
     }
