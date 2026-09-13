@@ -7,32 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .scanner-view video {
-      object-fit: cover !important;
-      border-radius: 1.5rem;
-    }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Laser Scanner Beam animation */
-    @keyframes scanLaser {
-      0%, 100% { transform: translateY(-7px); opacity: 0.7; }
-      50% { transform: translateY(7px); opacity: 1; }
-    }
-    .laser-line {
-      animation: scanLaser 2s ease-in-out infinite;
-    }
-  </style>
+  <style>body{font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent}.scanner-view video{object-fit:cover!important;border-radius:1.5rem}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}@keyframes scanLaser{0%,100%{transform:translateY(-7px);opacity:0.7}50%{transform:translateY(7px);opacity:1}}.laser-line{animation:scanLaser 2s ease-in-out infinite}</style>
 </head>
 <body class="bg-slate-900 sm:bg-slate-200 flex items-center justify-center min-h-screen p-0 sm:p-4 text-slate-900">
 
@@ -53,7 +28,7 @@
       </div>
     </header>
 
-    <!-- Scrollable Body (Added pb-28 so bottom content is never hidden behind floating bar) -->
+    <!-- Scrollable Body -->
     <main class="flex-1 overflow-y-auto no-scrollbar px-4 py-4 flex flex-col gap-4 pb-28">
       
       <!-- Wallet Balance Card -->
@@ -89,7 +64,7 @@
         </div>
       </section>
 
-      <!-- Payee Pop-up Card (Populates upon scanning QR) -->
+      <!-- Payee Pop-up Card -->
       <section id="payeeSection" class="hidden bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm transition-all duration-300 flex-shrink-0">
         <div class="flex items-center gap-3.5 mb-4">
           <div class="relative w-14 h-14 flex-shrink-0">
@@ -137,7 +112,7 @@
 
     </main>
 
-    <!-- FIXED FLOATING SCAN BAR (Mobile par screen bottom, desktop card par card bottom par chipka rahega) -->
+    <!-- Floating Scan Bar (Always anchored at bottom) -->
     <div class="fixed sm:absolute bottom-6 left-0 right-0 z-40 pointer-events-none flex justify-center px-4">
       <div class="pointer-events-auto bg-white/95 backdrop-blur-xl border border-slate-200/80 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.25)] rounded-full px-6 py-2.5 flex items-center gap-3 active:scale-95 transition-all cursor-pointer group" onclick="startScanner()">
         
@@ -244,7 +219,13 @@
 
     async function startScanner() {
       const modal = document.getElementById('scannerModal');
-      modal.classList.remove('hidden');
+
+      if (html5QrCode) {
+        try {
+          await html5QrCode.stop();
+          html5QrCode.clear();
+        } catch (e) {}
+      }
 
       html5QrCode = new Html5Qrcode("reader");
       const config = { fps: 10, qrbox: { width: 220, height: 220 } };
@@ -256,22 +237,30 @@
           onScanSuccess,
           () => {}
         );
+        modal.classList.remove('hidden');
       } catch (err) {
-        alert("Camera permission denied or camera not accessible: " + err);
-        stopScanner();
+        alert("Camera permission denied. Please allow camera access in browser settings.");
+        modal.classList.add('hidden');
+        if (html5QrCode) {
+          try {
+            html5QrCode.clear();
+          } catch (e) {}
+        }
       }
     }
 
     function stopScanner() {
+      const modal = document.getElementById('scannerModal');
+      modal.classList.add('hidden');
+
       if (html5QrCode) {
         html5QrCode.stop().then(() => {
           html5QrCode.clear();
-          document.getElementById('scannerModal').classList.add('hidden');
         }).catch(() => {
-          document.getElementById('scannerModal').classList.add('hidden');
+          try {
+            html5QrCode.clear();
+          } catch (e) {}
         });
-      } else {
-        document.getElementById('scannerModal').classList.add('hidden');
       }
     }
 
