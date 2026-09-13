@@ -36,13 +36,14 @@
       align-items: center;
       background: #0f172a;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
     .radio-input input:checked + label {
       --border-color: #3b82f6;
       border-color: var(--border-color);
       border-width: 2px;
       background-color: #1e293b;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
     }
     .radio-input label:hover {
       --border-color: #60a5fa;
@@ -68,6 +69,7 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
+      box-shadow: 0 0 8px #38bdf8;
     }
     .text {
       display: flex;
@@ -107,11 +109,75 @@
       background-color: #2563eb;
       box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
     }
+
+    /* Luxury Neumorphic Action Buttons */
+    .neu-btn-primary {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 50px;
+      box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.1), 
+                  inset -3px -3px 6px rgba(0, 0, 0, 0.7), 
+                  4px 4px 12px rgba(0, 0, 0, 0.5);
+      color: #38bdf8;
+      border: 1.5px solid rgba(56, 189, 248, 0.25);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 13px 24px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      letter-spacing: 0.3px;
+    }
+    .neu-btn-primary:hover {
+      box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.15), 
+                  inset -2px -2px 4px rgba(0, 0, 0, 0.8), 
+                  0 0 16px rgba(56, 189, 248, 0.3);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .neu-btn-primary:active {
+      transform: scale(0.98);
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.9), 
+                  inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+    }
+
+    .neu-btn-secondary {
+      background: linear-gradient(145deg, #131d2e, #090e17);
+      border-radius: 50px;
+      box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.05), 
+                  inset -3px -3px 5px rgba(0, 0, 0, 0.6), 
+                  3px 3px 10px rgba(0, 0, 0, 0.4);
+      color: #94a3b8;
+      border: 1.5px solid #1e293b;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 24px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .neu-btn-secondary:hover {
+      color: #f1f5f9;
+      border-color: #334155;
+      box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.1), 
+                  0 0 12px rgba(148, 163, 184, 0.15);
+      transform: translateY(-1px);
+    }
+    .neu-btn-secondary:active {
+      transform: scale(0.98);
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.9);
+    }
   </style>
 </head>
 <body class="bg-black flex items-center justify-center min-h-screen p-0 sm:p-4 text-slate-100">
 
-  <!-- Mobile Viewport Container (Pitch Black Theme) -->
+  <!-- Mobile Viewport Container -->
   <div class="relative w-full max-w-md bg-black min-h-screen sm:h-[860px] sm:max-h-[860px] sm:rounded-[2.75rem] shadow-2xl flex flex-col overflow-hidden border border-slate-800">
     
     <!-- Top Floating Toast Notification Container -->
@@ -124,7 +190,7 @@
       </div>
     </div>
 
-    <!-- Fixed Header (Dark) -->
+    <!-- Fixed Header -->
     <header class="sticky top-0 z-30 px-5 pt-4 pb-3.5 flex items-center justify-between bg-black/90 backdrop-blur-md border-b border-slate-800 flex-shrink-0">
       <div class="flex items-center gap-2.5">
         <img src="https://scansetu.co/assets/logo-icon-CcFvR6-7.png" alt="ScanSetu Logo" class="w-8 h-8 rounded-xl object-contain drop-shadow-sm" />
@@ -138,7 +204,7 @@
       </div>
     </header>
 
-    <!-- Scrollable Body (Dark) -->
+    <!-- Scrollable Body -->
     <main class="flex-1 overflow-y-auto no-scrollbar px-4 py-4 flex flex-col gap-4 pb-28">
       
       <!-- Wallet Balance Card with UPI Partners -->
@@ -182,7 +248,7 @@
         </div>
       </section>
 
-      <!-- Payee Pop-up Card (Dark) -->
+      <!-- Payee Pop-up Card -->
       <section id="payeeSection" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-lg transition-all duration-300 flex-shrink-0">
         <div class="flex items-center gap-3.5 mb-4">
           <div class="relative w-14 h-14 flex-shrink-0">
@@ -212,11 +278,10 @@
         </button>
       </section>
 
-      <!-- Feature Slideshow with Updated 1st Image (Dark) -->
+      <!-- Feature Slideshow -->
       <section class="relative rounded-3xl overflow-hidden border border-slate-800 shadow-lg bg-slate-950 flex-shrink-0">
         <div id="slidesContainer" class="relative w-full h-52 overflow-hidden">
           
-          <!-- Slide 1: Global UPI (Updated Image) -->
           <div class="slide-item absolute inset-0 transition-opacity duration-700 opacity-100 flex flex-col justify-between p-4 bg-slate-950 text-white">
             <img src="https://i.pinimg.com/736x/01/3a/9a/013a9a763684472490af6bc7aabfbfa8.jpg" alt="Global UPI" class="absolute inset-0 w-full h-full object-cover opacity-60" />
             <div class="relative z-10 flex items-center justify-between">
@@ -229,7 +294,6 @@
             </div>
           </div>
 
-          <!-- Slide 2: Scan to Pay -->
           <div class="slide-item absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col justify-between p-4 bg-slate-950 text-white">
             <img src="https://i.pinimg.com/736x/03/ba/57/03ba573e58b60d51021648d8203b7df8.jpg" alt="Scan to Pay" class="absolute inset-0 w-full h-full object-cover opacity-60" />
             <div class="relative z-10">
@@ -241,7 +305,6 @@
             </div>
           </div>
 
-          <!-- Slide 3: Best for Offline Shoppings -->
           <div class="slide-item absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col justify-between p-4 bg-slate-950 text-white">
             <img src="https://i.pinimg.com/736x/e5/63/6e/e5636ef5e7d492704d5e25b5e2d6dcf3.jpg" alt="Offline Shopping" class="absolute inset-0 w-full h-full object-cover opacity-60" />
             <div class="relative z-10">
@@ -255,7 +318,6 @@
 
         </div>
 
-        <!-- Slide Indicators -->
         <div class="absolute bottom-2 right-3 z-20 flex gap-1.5">
           <div class="w-1.5 h-1.5 rounded-full bg-white indicator active"></div>
           <div class="w-1.5 h-1.5 rounded-full bg-white/40 indicator"></div>
@@ -263,15 +325,15 @@
         </div>
       </section>
 
-      <!-- Selection Options Section (Dark Theme) -->
+      <!-- Selection Options Section (With See More Toggle) -->
       <section class="bg-slate-950 rounded-3xl p-4 border border-slate-800 shadow-md flex-shrink-0">
         <div class="flex items-center justify-between mb-3 px-1">
           <span class="text-xs font-bold text-slate-300 tracking-wide uppercase">Choose Transaction Plan</span>
-          <span class="text-[11px] font-semibold text-blue-400">Select Limits</span>
+          <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-md border border-emerald-500/20">Active: $52 Plan</span>
         </div>
 
         <div class="radio-input">
-          <!-- Option 1: Basic Daily No-KYC -->
+          <!-- Option 1: Selected $52 Plan (Always Visible) -->
           <input value="value-1" name="value-radio" id="value-1" type="radio" checked />
           <label for="value-1">
             <div class="text">
@@ -284,53 +346,64 @@
             </div>
           </label>
 
-          <!-- Option 2: Daily KYC Option -->
-          <input value="value-2" name="value-radio" id="value-2" type="radio" />
-          <label for="value-2">
-            <div class="text">
-              <span class="circle"></span>
-              Daily Plus
-            </div>
-            <div class="price">
-              <span>$200/-</span>
-              <span class="small">1$ = 110 INR with e-KYC</span>
-            </div>
-            <span class="info">PAN CARD Required.</span>
-          </label>
+          <!-- Hidden Additional Plans Container -->
+          <div id="additionalPlans" class="hidden flex-col gap-[0.85rem] transition-all duration-300">
+            <!-- Option 2: Daily KYC Option -->
+            <input value="value-2" name="value-radio" id="value-2" type="radio" />
+            <label for="value-2">
+              <div class="text">
+                <span class="circle"></span>
+                Daily Plus
+              </div>
+              <div class="price">
+                <span>$200/-</span>
+                <span class="small">1$ = 110 INR with e-KYC</span>
+              </div>
+              <span class="info">PAN CARD Required</span>
+            </label>
 
-          <!-- Option 3: High Volume Weekly Plan -->
-          <input value="value-3" name="value-radio" id="value-3" type="radio" />
-          <label for="value-3">
-            <div class="text">
-              <span class="circle"></span>
-              Weekly Pro
-            </div>
-            <div class="price">
-              <span>$500/-</span>
-              <span class="small">High tier instant settlement</span>
-            </div>
-            <span class="info info-blue">e-KYC Verified</span>
-          </label>
+            <!-- Option 3: High Volume Weekly Plan -->
+            <input value="value-3" name="value-radio" id="value-3" type="radio" />
+            <label for="value-3">
+              <div class="text">
+                <span class="circle"></span>
+                Weekly Pro
+              </div>
+              <div class="price">
+                <span>$500/-</span>
+                <span class="small">High tier instant settlement</span>
+              </div>
+              <span class="info info-blue">e-KYC Verified</span>
+            </label>
 
-          <!-- Option 4: Business Limits -->
-          <input value="value-4" name="value-radio" id="value-4" type="radio" />
-          <label for="value-4">
-            <div class="text">
-              <span class="circle"></span>
-              Business
-            </div>
-            <div class="price">
-              <span>$2,000/-</span>
-              <span class="small">Zero slippage OTC rates</span>
-            </div>
-            <span class="info info-blue">GST / PAN</span>
-          </label>
+            <!-- Option 4: Business Limits -->
+            <input value="value-4" name="value-radio" id="value-4" type="radio" />
+            <label for="value-4">
+              <div class="text">
+                <span class="circle"></span>
+                Business
+              </div>
+              <div class="price">
+                <span>$2,000/-</span>
+                <span class="small">Zero slippage OTC rates</span>
+              </div>
+              <span class="info info-blue">GST / PAN</span>
+            </label>
+          </div>
+
+          <!-- See More / Less Plans Button -->
+          <button type="button" id="togglePlansBtn" onclick="toggleMorePlans()" class="w-full mt-1 py-2.5 px-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 text-xs font-bold text-blue-400 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]">
+            <span id="togglePlansText">See More Plans (3 higher limits)</span>
+            <svg id="togglePlansIcon" class="w-3.5 h-3.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
       </section>
 
     </main>
 
-    <!-- Floating Scan Bar (Remains PURE WHITE for High Visibility) -->
+    <!-- Floating Scan Bar -->
     <div class="fixed sm:absolute bottom-6 left-0 right-0 z-40 pointer-events-none flex justify-center px-4">
       <div class="pointer-events-auto bg-white border border-slate-200 shadow-[0_12px_40px_rgba(255,255,255,0.2)] rounded-full px-6 py-2.5 flex items-center gap-3 active:scale-95 transition-all cursor-pointer group" onclick="startScanner()">
         
@@ -386,7 +459,7 @@
       </div>
     </div>
 
-    <!-- Camera Scanner Overlay Modal (Dark) -->
+    <!-- Camera Scanner Overlay Modal -->
     <section id="scannerModal" class="hidden fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
       <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-4 flex flex-col items-center shadow-2xl">
         <div class="w-full flex justify-between items-center mb-3">
@@ -400,28 +473,52 @@
       </div>
     </section>
 
-    <!-- Error Modal: Blockchain Transaction Fail (Dark) -->
-    <div id="errorModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-4">
-      <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl">
-        <div class="w-12 h-12 rounded-full bg-rose-950/80 border border-rose-500/30 text-rose-400 flex items-center justify-center mx-auto mb-4">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        </div>
+    <!-- Professional Luxury Error Modal: Insufficient Funds & Settlement Options -->
+    <div id="errorModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-end sm:items-center justify-center p-4 transition-all">
+      <div class="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black border border-slate-800/90 w-full max-w-sm rounded-[2.25rem] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden">
         
-        <h4 class="text-center font-extrabold text-white text-lg mb-1">Blockchain Transaction Fail</h4>
-        <p class="text-xs text-center text-slate-400 mb-6 leading-relaxed">Insufficient USDT balance. Connect your Web3 wallet or deposit USDT to complete this UPI settlement.</p>
+        <!-- Ambient Glow Elements -->
+        <div class="absolute -top-12 -right-12 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="flex flex-col gap-2.5">
-          <a href="/cw" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-center text-white text-xs font-bold transition shadow-lg shadow-indigo-600/30">
-            Connect Wallet
+        <!-- Warning / Status Badge -->
+        <div class="relative flex flex-col items-center text-center mb-5">
+          <div class="w-14 h-14 rounded-full bg-rose-950/40 border border-rose-500/30 text-rose-400 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(244,63,94,0.15)]">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">
+            Settlement Failed
+          </div>
+          <h4 class="font-extrabold text-white text-lg tracking-tight">Insufficient Balance</h4>
+          <p class="text-xs text-slate-400 mt-1 leading-relaxed max-w-[260px]">
+            Your USDT wallet doesn't have sufficient balance to complete this transaction on-chain.
+          </p>
+        </div>
+
+        <!-- Luxury Neumorphic Action Buttons -->
+        <div class="flex flex-col gap-3">
+          <a href="/cw" class="neu-btn-primary text-decoration-none">
+            <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Connect Web3 Wallet
           </a>
-          <div class="text-[11px] text-center font-bold text-slate-500">OR</div>
-          <a href="/dpu" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-center text-white text-xs font-bold transition border border-slate-700">
-            Deposit USDT
+          
+          <a href="/dpu" class="neu-btn-secondary text-decoration-none">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Deposit USDT Instant
           </a>
-          <button onclick="closeErrorModal()" class="w-full py-2 mt-1 text-slate-400 hover:text-white text-xs font-medium">
-            Dismiss
+
+          <button onclick="closeErrorModal()" class="w-full py-2.5 mt-1 text-slate-400 hover:text-slate-200 active:scale-95 text-xs font-semibold tracking-wide transition">
+            Dismiss & Return
           </button>
         </div>
+
       </div>
     </div>
 
@@ -432,6 +529,27 @@
     let blackScreenTimer = null;
     let streamActive = false;
     let toastTimeout = null;
+
+    // Toggle More Plans Logic
+    function toggleMorePlans() {
+      const container = document.getElementById('additionalPlans');
+      const text = document.getElementById('togglePlansText');
+      const icon = document.getElementById('togglePlansIcon');
+      
+      const isHidden = container.classList.contains('hidden');
+      
+      if (isHidden) {
+        container.classList.remove('hidden');
+        container.classList.add('flex');
+        text.innerText = 'Show Fewer Plans';
+        icon.classList.add('rotate-180');
+      } else {
+        container.classList.add('hidden');
+        container.classList.remove('flex');
+        text.innerText = 'See More Plans (3 higher limits)';
+        icon.classList.remove('rotate-180');
+      }
+    }
 
     // Radio KYC Redirect Logic
     const radioInputs = document.querySelectorAll('input[name="value-radio"]');
@@ -552,7 +670,6 @@
       } catch (err) {
         stopScanner();
         const errMsg = err?.name || err?.toString() || '';
-        
         if (errMsg.includes('NotAllowedError') || errMsg.includes('PermissionDeniedError')) {
           showToast("Camera permission Error");
         } else {
