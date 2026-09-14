@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deepak Astrology - Wallet Tester</title>
+  <title>Connect Wallet</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     body {
-      background-color: #0d1117;
-      color: #c9d1d9;
+      background: #050508;
+      background-image: radial-gradient(circle at 50% 0%, #1e1035 0%, #050508 70%);
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -22,133 +23,173 @@
       padding: 20px;
     }
 
-    .container {
+    .card {
       width: 100%;
-      max-width: 480px;
-      background-color: #161b22;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-      border: 1px solid #30363d;
+      max-width: 440px;
+      background: rgba(18, 16, 26, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(98, 32, 251, 0.15);
+      text-align: center;
     }
 
-    h2 {
-      text-align: center;
-      font-size: 1.3rem;
+    .title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #ffffff 0%, #a5a5a5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       margin-bottom: 6px;
-      color: #58a6ff;
     }
 
-    p.subtitle {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #8b949e;
-      margin-bottom: 20px;
-      word-break: break-all;
+    .subtitle {
+      font-size: 0.85rem;
+      color: #8a8a9e;
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
     }
 
-    .wallet-grid {
+    .wallet-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .wallet-btn {
+    .wallet-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 14px 18px;
-      background-color: #21262d;
-      color: #f0f6fc;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-      border: 1px solid #30363d;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      transition: all 0.3s ease;
     }
 
-    .wallet-btn:active {
-      transform: scale(0.98);
-      background-color: #30363d;
+    .wallet-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(98, 32, 251, 0.4);
+      box-shadow: 0 4px 20px rgba(98, 32, 251, 0.15);
     }
 
-    .wallet-btn span.scheme {
-      font-size: 0.75rem;
-      color: #58a6ff;
-      background: #0d1117;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-family: monospace;
+    .wallet-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
-    /* Wallet Specific Colors */
-    .metamask { border-left: 4px solid #f6851b; }
-    .trust { border-left: 4px solid #3375bb; }
-    .coinbase { border-left: 4px solid #0052ff; }
-    .phantom { border-left: 4px solid #ab9ff2; }
-    .rainbow { border-left: 4px solid #ff4081; }
-    .okx { border-left: 4px solid #ffffff; }
-
-    .target-box {
-      margin-top: 20px;
-      padding: 12px;
-      background-color: #0d1117;
+    .wallet-logo {
+      width: 38px;
+      height: 38px;
       border-radius: 8px;
-      font-size: 0.8rem;
-      color: #8b949e;
-      border: 1px dashed #30363d;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .wallet-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #eaeaea;
+    }
+
+    /* Custom Luxury Button Style */
+    .custom-btn {
+      border-radius: .25rem;
+      text-transform: uppercase;
+      font-style: normal;
+      font-weight: 400;
+      padding-left: 25px;
+      padding-right: 25px;
+      color: #fff;
+      -webkit-clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+      clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+      height: 40px;
+      font-size: 0.7rem;
+      line-height: 40px;
+      letter-spacing: 1.2px;
+      transition: .2s .1s;
+      background-image: linear-gradient(90deg,#1c1c1c,#6220fb);
+      border: 0 solid;
+      overflow: hidden;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .custom-btn:hover {
+      cursor: pointer;
+      transition: all .3s ease-in;
+      padding-right: 30px;
+      padding-left: 30px;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h2>Wallet Deep Link Launcher</h2>
-    <p class="subtitle">Target: https://deepak-astrology.vercel.app/</p>
+  <div class="card">
+    <h1 class="title">Connect Wallet</h1>
+    <p class="subtitle">Select You wallet and get started</p>
 
-    <div class="wallet-grid">
-      
+    <div class="wallet-list">
+
       <!-- MetaMask -->
-      <a class="wallet-btn metamask" href="metamask://dapp/deepak-astrology.vercel.app/">
-        MetaMask
-        <span class="scheme">metamask://</span>
-      </a>
+      <div class="wallet-item">
+        <div class="wallet-info">
+          <img src="https://i.pinimg.com/736x/5b/ce/8b/5bce8be6cccb2a57aebb374b1ede6721.jpg" alt="MetaMask" class="wallet-logo">
+          <span class="wallet-name">MetaMask</span>
+        </div>
+        <a href="metamask://dapp/deepak-astrology.vercel.app/" class="custom-btn">Connect</a>
+      </div>
 
       <!-- Trust Wallet -->
-      <a class="wallet-btn trust" href="trust://open_url?coin_id=60&url=https%3A%2F%2Fdeepak-astrology.vercel.app%2F">
-        Trust Wallet
-        <span class="scheme">trust://</span>
-      </a>
+      <div class="wallet-item">
+        <div class="wallet-info">
+          <img src="https://i.pinimg.com/1200x/2a/98/d7/2a98d7c3b241b50f73f799b68a1eb501.jpg" alt="Trust Wallet" class="wallet-logo">
+          <span class="wallet-name">Trust Wallet</span>
+        </div>
+        <a href="trust://open_url?coin_id=60&url=https%3A%2F%2Fdeepak-astrology.vercel.app%2F" class="custom-btn">Connect</a>
+      </div>
 
       <!-- Coinbase Wallet -->
-      <a class="wallet-btn coinbase" href="cbwallet://dapp?url=https%3A%2F%2Fdeepak-astrology.vercel.app%2F">
-        Coinbase Wallet
-        <span class="scheme">cbwallet://</span>
-      </a>
+      <div class="wallet-item">
+        <div class="wallet-info">
+          <img src="https://i.pinimg.com/736x/6d/c1/ac/6dc1ace02b508d7b28e6ae543b75d09d.jpg" alt="Coinbase Wallet" class="wallet-logo">
+          <span class="wallet-name">Coinbase</span>
+        </div>
+        <a href="cbwallet://dapp?url=https%3A%2F%2Fdeepak-astrology.vercel.app%2F" class="custom-btn">Connect</a>
+      </div>
 
       <!-- Phantom -->
-      <a class="wallet-btn phantom" href="phantom://browse/https%3A%2F%2Fdeepak-astrology.vercel.app%2F">
-        Phantom
-        <span class="scheme">phantom://</span>
-      </a>
+      <div class="wallet-item">
+        <div class="wallet-info">
+          <img src="https://i.pinimg.com/736x/c4/33/34/c43334aedbb9722dcb0e82feb8d2dbb4.jpg" alt="Phantom" class="wallet-logo">
+          <span class="wallet-name">Phantom</span>
+        </div>
+        <a href="phantom://browse/https%3A%2F%2Fdeepak-astrology.vercel.app%2F" class="custom-btn">Connect</a>
+      </div>
 
       <!-- Rainbow -->
-      <a class="wallet-btn rainbow" href="rainbow://open?url=https%3A%2F%2Fdeepak-astrology.vercel.app%2F">
-        Rainbow
-        <span class="scheme">rainbow://</span>
-      </a>
+      <div class="wallet-item">
+        <div class="wallet-info">
+          <img src="https://i.pinimg.com/736x/49/cc/af/49ccaf9316affbfd5774848d0ee49159.jpg" alt="Rainbow" class="wallet-logo">
+          <span class="wallet-name">Rainbow</span>
+        </div>
+        <a href="rainbow://open?url=https%3A%2F%2Fdeepak-astrology.vercel.app%2F" class="custom-btn">Connect</a>
+      </div>
 
       <!-- OKX Wallet -->
-      <a class="wallet-btn okx" href="okx://wallet/dapp/details?dappUrl=https%3A%2F%2Fdeepak-astrology.vercel.app%2F">
-        OKX Wallet
-        <span class="scheme">okx://</span>
-      </a>
+      <div class="wallet-item">
+        <div class="wallet-info">
+          <img src="https://i.pinimg.com/736x/63/f1/f6/63f1f670e08a09445763d71d5861b6b6.jpg" alt="OKX Wallet" class="wallet-logo">
+          <span class="wallet-name">OKX Wallet</span>
+        </div>
+        <a href="okx://wallet/dapp/details?dappUrl=https%3A%2F%2Fdeepak-astrology.vercel.app%2F" class="custom-btn">Connect</a>
+      </div>
 
-    </div>
-
-    <div class="target-box">
-      <strong>Note:</strong> Jab aap button dabayenge, toh mobile operating system aapki site ko wallet app ke in-browser dApp viewer mein open kar dega.
     </div>
   </div>
 
