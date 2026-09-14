@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Scheme URL Tester</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background-color: #1e293b;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+      color: #38bdf8;
+    }
+
+    p.subtitle {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+
+    .wallet-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .wallet-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background-color: #334155;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .wallet-btn:active {
+      transform: scale(0.98);
+      background-color: #475569;
+    }
+
+    .wallet-btn span.scheme {
+      font-size: 0.75rem;
+      color: #38bdf8;
+      background: #0f172a;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+
+    /* Specific Wallet Colors on Hover/Active */
+    .metamask { border-color: #f6851b; }
+    .trust { border-color: #0500ff; }
+    .coinbase { border-color: #0052ff; }
+    .phantom { border-color: #ab9ff2; }
+    .rainbow { border-color: #001e3c; }
+    .okx { border-color: #ffffff; }
+
+    .note {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #0f172a;
+      border-left: 4px solid #f59e0b;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Wallet Scheme Tester</h2>
+    <p class="subtitle">Custom Scheme Links (Target: binance.com/1)</p>
+
+    <div class="wallet-grid">
+      
+      <!-- MetaMask -->
+      <a class="wallet-btn metamask" href="metamask://dapp/binance.com/1">
+        MetaMask
+        <span class="scheme">metamask://</span>
+      </a>
+
+      <!-- Trust Wallet -->
+      <a class="wallet-btn trust" href="trust://open_url?coin_id=60&url=https%3A%2F%2Fbinance.com%2F1">
+        Trust Wallet
+        <span class="scheme">trust://</span>
+      </a>
+
+      <!-- Coinbase Wallet -->
+      <a class="wallet-btn coinbase" href="cbwallet://dapp?url=https%3A%2F%2Fbinance.com%2F1">
+        Coinbase Wallet
+        <span class="scheme">cbwallet://</span>
+      </a>
+
+      <!-- Phantom -->
+      <a class="wallet-btn phantom" href="phantom://browse/https%3A%2F%2Fbinance.com%2F1">
+        Phantom
+        <span class="scheme">phantom://</span>
+      </a>
+
+      <!-- Rainbow -->
+      <a class="wallet-btn rainbow" href="rainbow://open?url=https%3A%2F%2Fbinance.com%2F1">
+        Rainbow
+        <span class="scheme">rainbow://</span>
+      </a>
+
+      <!-- OKX Wallet -->
+      <a class="wallet-btn okx" href="okx://wallet/dapp/details?dappUrl=https%3A%2F%2Fbinance.com%2F1">
+        OKX Wallet
+        <span class="scheme">okx://</span>
+      </a>
+
+    </div>
+
+    <div class="note">
+      <strong>Testing Note:</strong> Agar specific wallet app mobile mein install nahi hai, toh link click karne par browser Error ya "Page Not Found" show kar sakta hai.
+    </div>
+  </div>
+
+</body>
+</html>
