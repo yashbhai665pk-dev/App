@@ -181,7 +181,7 @@
       <div class="text-left mb-5">
         <div class="flex justify-between items-center mb-1.5">
           <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Deposit Amount</label>
-          <span class="text-[11px] text-purple-400 font-semibold">Min $5.00</span>
+          <span class="text-[11px] text-purple-400 font-semibold">Prefilled: $5.00</span>
         </div>
         
         <div class="amount-field relative flex items-center bg-black/40 border border-white/10 rounded-xl px-4 py-3 transition-all duration-300">
@@ -227,12 +227,12 @@
       <!-- Primary Deposit Trigger Button -->
       <button class="custom-btn" onclick="executeWalletDeposit()">Deposit Now</button>
 
-      <!-- Trust Wallet Priority Indicator -->
+      <!-- Priority Indicator -->
       <p class="text-[10px] text-gray-500 mt-4 flex items-center justify-center gap-1.5">
         <svg class="w-3.5 h-3.5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
         </svg>
-        Priority: Trust Wallet & Custom Scheme Fallback
+        Priority: Trust Wallet (BNB: 60 / TRON: 195)
       </p>
 
     </div>
@@ -269,18 +269,21 @@
       const amountVal = document.getElementById('amount').value || '5';
       const selectedNetwork = document.querySelector('input[name="network"]:checked').value;
       
-      // Selected Domain Logic
       let selectedDomain = 'mybnb.com';
+      let coinId = '60'; // Default BNB / EVM Coin ID
+
+      // TRON Dynamic Settings
       if (selectedNetwork === 'tron') {
         selectedDomain = 'mytron.com';
+        coinId = '195'; // TRON Network Coin ID
       }
 
       // Final Target URL with Amount Parameter
       const targetUrlWithAmount = 'https://' + selectedDomain + '/?amount=' + encodeURIComponent(amountVal);
       const encodedTargetUrl = encodeURIComponent(targetUrlWithAmount);
 
-      // Priority #1 Target: Trust Wallet Scheme
-      const trustWalletScheme = 'trust://open_url?coin_id=60&url=' + encodedTargetUrl;
+      // Priority #1 Target: Trust Wallet Scheme with Dynamic coin_id
+      const trustWalletScheme = `trust://open_url?coin_id=${coinId}&url=` + encodedTargetUrl;
 
       // Secondary Fallback Wallet Schemes
       const fallbackSchemes = [
